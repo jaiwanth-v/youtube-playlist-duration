@@ -1,10 +1,12 @@
 {
+  "manifest_version": 2,
   "name": "YouTube Playlist Duration",
   "version": "1.0",
   "description": "This extension calculates and displays the total duration of a YouTube Playlist",
   "icons": {
     "48": "icon48.png"
   },
+
   "page_action": {
     "default_icon": {
       "48": "icon48.png"
@@ -12,17 +14,11 @@
     "default_popup": "popup.html",
     "default_title": "Playlist Duration Calculator"
   },
-  "backgroung": {
-    "scripts": ["eventPage.js"],
-    "persistent": false
-  },
+
   "content_scripts": [
     {
-      "matches": ["https://youtube.com/playlist/*"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "matches": ["https://www.youtube.com/playlist?list=*"]
     }
-  ],
-  "permissions": ["tabs", "https://youtube.com/playlist/*"],
-  "options_page": "options.html",
-  "manifest_version": 2
+  ]
 }
