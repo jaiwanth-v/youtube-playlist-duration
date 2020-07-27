@@ -56,7 +56,11 @@ var timer = setInterval(() => {
       "#contents > ytd-playlist-video-list-renderer #overlays > ytd-thumbnail-overlay-time-status-renderer > span"
     )
   );
-  if ((initial && final) || (initial === 0 && final))
+  if (
+    (initial && final) ||
+    (initial === 0 && final) ||
+    (initial === 0 && final === 0)
+  )
     var arr = initialarr.slice(initial, final + 1);
   else arr = initialarr;
   if (arr.length > 0) {
