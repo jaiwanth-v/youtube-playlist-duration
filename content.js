@@ -1,8 +1,11 @@
-if (document.readyState !== "complete") {
-  window.addEventListener("load", afterWindowLoaded);
-} else {
-  afterWindowLoaded();
-}
+let initial, final;
+chrome.runtime.sendMessage({ todo: "showPageAction" });
+chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
+  if (req.todo === "changeValues") {
+    initial = req.values.initial - 1;
+    final = req.values.final - 1;
+  }
+});
 
 const addTimes = (startTime, endTime) => {
   var times = [0, 0, 0];
@@ -43,43 +46,51 @@ const addTimes = (startTime, endTime) => {
   );
 };
 
-var prevTotal = null,
-  flag = 0;
-let isAppended = false;
+let prevTotal = null,
+  flag = 0,
+  isAppended = false;
 
-function afterWindowLoaded() {
-  var timer = setInterval(() => {
-    var arr = Array.from(
-      document.querySelectorAll(
-        "#contents > ytd-playlist-video-list-renderer #overlays > ytd-thumbnail-overlay-time-status-renderer > span"
-      )
-    );
-    if (arr.length > 0) {
-      var newTotal;
-      if (!prevTotal) {
-        prevTotal = arr.reduce((sum, v) => addTimes(sum, v.innerText), 0);
-        flag = 1;
-      }
-
-      if (flag === 1) flag++;
-      else {
-        newTotal = arr.reduce((sum, v) => addTimes(sum, v.innerText), 0);
-        if (newTotal === prevTotal) {
-          if (!isAppended) {
-            var playlistDuration = document.createElement("h6");
-            playlistDuration.setAttribute("id", "playlistDuration");
-            playlistDuration.textContent = `Playlist Duration (1-${arr.length}) : ${prevTotal}`;
-            document.querySelector("#title").appendChild(playlistDuration);
-            isAppended = true;
-          } else {
-            document.getElementById(
-              "playlistDuration"
-            ).textContent = `Playlist Duration (1-${arr.length}) : ${prevTotal}`;
-          }
-        } else prevTotal = newTotal;
-      }
-    } else {
-      return;
+var timer = setInterval(() => {
+  var initialarr = Array.from(
+    document.querySelectorAll(
+      "#contents > ytd-playlist-video-list-renderer #overlays > ytd-thumbnail-overlay-time-status-renderer > span"
+    )
+  );
+  if ((initial && final) || (initial === 0 && final))
+    var arr = initialarr.slice(initial, final + 1);
+  else arr = initialarr;
+  if (arr.length > 0) {
+    let newTotal;
+    if (!prevTotal) {
+      prevTotal = arr.reduce((sum, v) => addTimes(sum, v.innerText), 0);
+      flag = 1;
     }
-  }, 1000);
-}
+    if (flag === 1) flag++;
+    else {
+      newTotal = arr.reduce((sum, v) => addTimes(sum, v.innerText), 0);
+      if (newTotal === prevTotal) {
+        if (!isAppended) {
+          let playlistDuration = document.createElement("h3");
+          playlistDuration.setAttribute("id", "playlistDuration");
+          var t = prevTotal.split(":");
+          playlistDuration.textContent = `Playlist Duration (${
+            initial ? initial + 1 : 1
+          }-${final ? final + 1 : arr.length}) : ${t[0]}h ${t[1]}m ${t[2]}s`;
+          document.querySelector("#stats").appendChild(playlistDuration);
+          isAppended = true;
+        } else {
+          t = newTotal.split(":");
+          document.getElementById(
+            "playlistDuration"
+          ).textContent = `Playlist Duration (${
+            initial < initialarr.length ? initial + 1 : 1
+          }-${final < initialarr.length ? final + 1 : initialarr.length}) : ${
+            t[0]
+          }h ${t[1]}m ${t[2]}s`;
+        }
+      } else prevTotal = newTotal;
+    }
+  } else {
+    return;
+  }
+}, 50);

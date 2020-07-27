@@ -15,10 +15,15 @@
     "default_title": "Playlist Duration Calculator"
   },
 
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "permissions": ["tabs", "*://www.youtube.com/*"],
   "content_scripts": [
     {
       "js": ["content.js"],
-      "matches": ["https://www.youtube.com/playlist?list=*"]
+      "matches": ["*://www.youtube.com/*"]
     }
   ]
 }
