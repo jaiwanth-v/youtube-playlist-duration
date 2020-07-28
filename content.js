@@ -8,35 +8,30 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 });
 
 const addTimes = (startTime, endTime) => {
-  var times = [0, 0, 0];
-  var max = times.length;
+  let times = [0, 0, 0];
+  let max = times.length;
 
-  var a = (startTime || "").split(":");
+  let a = (startTime || "").split(":");
   if (a.length == 2) a.unshift(0);
-  var b = (endTime || "").split(":");
+  let b = (endTime || "").split(":");
   if (b.length == 2) b.unshift(0);
 
-  for (var i = 0; i < max; i++) {
+  for (let i = 0; i < max; i++) {
     a[i] = isNaN(parseInt(a[i])) ? 0 : parseInt(a[i]);
     b[i] = isNaN(parseInt(b[i])) ? 0 : parseInt(b[i]);
-  }
-
-  for (var i = 0; i < max; i++) {
     times[i] = a[i] + b[i];
   }
 
-  var hours = times[0];
-  var minutes = times[1];
-  var seconds = times[2];
+  let [hours, minutes, seconds] = times;
 
   if (seconds >= 60) {
-    var m = (seconds / 60) << 0;
+    let m = (seconds / 60) << 0;
     minutes += m;
     seconds -= 60 * m;
   }
 
   if (minutes >= 60) {
-    var h = (minutes / 60) << 0;
+    let h = (minutes / 60) << 0;
     hours += h;
     minutes -= 60 * h;
   }
@@ -76,14 +71,18 @@ var timer = setInterval(() => {
         if (!isAppended) {
           let playlistDuration = document.createElement("h3");
           playlistDuration.setAttribute("id", "playlistDuration");
+
           var t = prevTotal.split(":");
+
           playlistDuration.textContent = `Playlist Duration (${
             initial ? initial + 1 : 1
           }-${final ? final + 1 : arr.length}) : ${t[0]}h ${t[1]}m ${t[2]}s`;
+
           document.querySelector("#stats").appendChild(playlistDuration);
           isAppended = true;
         } else {
           t = newTotal.split(":");
+
           document.getElementById(
             "playlistDuration"
           ).textContent = `Playlist Duration (${

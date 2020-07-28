@@ -12,14 +12,8 @@ window.onload = function () {
   };
 };
 
-let max = document.getElementById("end");
-
-const getMaxValueForRequest = () => {
-  let start = document.getElementById("start");
-  var maxEnd = max.value;
-  start.setAttribute("max", maxEnd);
-};
-
-max.addEventListener("change", function (event) {
-  getMaxValueForRequest();
+document.getElementById("end").addEventListener("change", () => {
+  document
+    .getElementById("start")
+    .setAttribute("max", document.getElementById("end").value);
 });
