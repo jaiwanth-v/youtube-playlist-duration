@@ -1,5 +1,6 @@
-# youtube-playlist-duration
-This is a chrome extension which calculates and displays total duration of a YouTube playlist. 
+# Use:
+
+Webstore : https://chrome.google.com/webstore/detail/youtube-playlist-duration/pmaemkjbelibcgknodkoeggkohmhdnbb?hl=en&authuser=1
 
 # Features
 
