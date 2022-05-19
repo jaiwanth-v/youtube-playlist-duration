@@ -4,13 +4,26 @@
   box-sizing: border-box;
 }
 
-body,
-html {
+body {
   width: 150px;
-  height: 180px;
-  font-family: "Quicksand", sans-serif;
+  height: 170px;
+  padding: 10px;
+  font-family: "Calibri", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+  margin-top: 40px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.updated-text {
+  margin-top: 7px;
+  text-align: center;
+  white-space: inherit;
+  font-size: 13px !important;
 }
 
 .box {
@@ -40,7 +53,8 @@ button:focus {
   width: 100%;
   display: inline-table;
   padding: 5px 20px;
-  margin-bottom: 2px;
+  font-size: 16px;
+  margin: 2px;
 }
 
 input[type="number"] {
@@ -71,23 +85,26 @@ input[type="number"]:focus {
 button {
   width: 100%;
   height: 48px;
-  margin-top: 37px;
+  margin-top: 7px;
   padding: 0px 20px;
-  font-family: "Quicksand", sans-serif;
   font-weight: 700;
   font-size: 18px;
   color: #fff;
   line-height: 40px;
   text-align: center;
-  background-color: #87314e;
-  border: 1px #87314e solid;
-  opacity: 1;
+  background-color: #d81b60 ;
+  border: 1px #d81b60 solid;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #df405a;
-  border: 1px #df405a solid;
+  background-color: #c2185b ;
+  border: 1px #c2185b solid;
+}
+
+button:active {
+  background-color: #ad1457 ;
+  border: 1px #ad1457 solid;
 }
 
 button:focus {

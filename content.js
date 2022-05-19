@@ -1,5 +1,4 @@
-let initial, final;
-chrome.runtime.sendMessage({ todo: "showPageAction" });
+var initial, final, arr;
 chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
   if (req.todo === "changeValues") {
     initial = req.values.initial - 1;
@@ -42,13 +41,17 @@ const addTimes = (startTime, endTime) => {
 };
 
 let prevTotal = null,
-  flag = 0,
-  isAppended = false;
+  flag = 0;
+
+const isMobile = window.location.href.includes("m.youtube");
 
 var timer = setInterval(() => {
+  if (!window.location.href.includes("playlist")) return;
   var initialarr = Array.from(
     document.querySelectorAll(
-      "#contents > ytd-playlist-video-list-renderer #overlays > ytd-thumbnail-overlay-time-status-renderer > span"
+      `yt${isMobile ? "m" : "d"}-playlist-video-list-renderer yt${
+        isMobile ? "m" : "d"
+      }-thumbnail-overlay-time-status-renderer > span`
     )
   );
   if (
@@ -56,7 +59,7 @@ var timer = setInterval(() => {
     (initial === 0 && final) ||
     (initial === 0 && final === 0)
   )
-    var arr = initialarr.slice(initial, final + 1);
+    arr = initialarr.slice(initial, final + 1);
   else arr = initialarr;
   if (arr.length > 0) {
     let newTotal;
@@ -68,9 +71,9 @@ var timer = setInterval(() => {
     else {
       newTotal = arr.reduce((sum, v) => addTimes(sum, v.innerText), 0);
       if (newTotal === prevTotal) {
-        if (!isAppended) {
+        if (!document.getElementById("playlist-duration")) {
           let playlistDuration = document.createElement("h3");
-          playlistDuration.setAttribute("id", "playlistDuration");
+          playlistDuration.setAttribute("id", "playlist-duration");
 
           var t = prevTotal.split(":");
 
@@ -78,13 +81,13 @@ var timer = setInterval(() => {
             initial ? initial + 1 : 1
           }-${final ? final + 1 : arr.length}) : ${t[0]}h ${t[1]}m ${t[2]}s`;
 
-          document.querySelector("#stats").appendChild(playlistDuration);
-          isAppended = true;
+          document
+            .querySelector(isMobile ? "div.playlist-header-stats" : "#stats")
+            .appendChild(playlistDuration);
         } else {
           t = newTotal.split(":");
-
           document.getElementById(
-            "playlistDuration"
+            "playlist-duration"
           ).textContent = `Playlist Duration (${
             initial < initialarr.length ? initial + 1 : 1
           }-${final < initialarr.length ? final + 1 : initialarr.length}) : ${
@@ -96,4 +99,4 @@ var timer = setInterval(() => {
   } else {
     return;
   }
-}, 50);
+}, 100);
